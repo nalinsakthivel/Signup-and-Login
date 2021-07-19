@@ -40,6 +40,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     paddingLeft: 10,
+    padding: 0,
     fontSize: 20,
     fontWeight: 'bold',
     color: colours.balck,

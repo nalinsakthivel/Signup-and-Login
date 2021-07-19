@@ -1,11 +1,19 @@
 import React from 'react';
-import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  Dimensions,
+} from 'react-native';
 import {colours} from '../Constants';
-
-const Mybutton = props => {
+const screenWidth = Dimensions.get('window').width;
+const Mybutton = ({style, name, onPress}) => {
   return (
-    <TouchableOpacity style={{...styles.touchcontainer, ...props.style}}>
-      <Text style={styles.text}>{props.name}</Text>
+    <TouchableOpacity
+      style={{...styles.touchcontainer, ...style}}
+      onPress={onPress}>
+      <Text style={styles.text}>{name}</Text>
     </TouchableOpacity>
   );
 };
@@ -14,8 +22,9 @@ export default Mybutton;
 
 const styles = StyleSheet.create({
   touchcontainer: {
-    width: '100%',
-    height: 30,
+    width: screenWidth * 0.87,
+    height: 45,
+    elevation: 3,
     alignItems: 'center',
     justifyContent: 'center',
     // borderWidth:1,
