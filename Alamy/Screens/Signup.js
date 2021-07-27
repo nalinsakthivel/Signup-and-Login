@@ -6,12 +6,13 @@ import {
   View,
   Dimensions,
   TouchableOpacity,
+  ToastAndroid,
 } from 'react-native';
 import CheckBox from '@react-native-community/checkbox';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {useNavigation} from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {colours} from '../Constants';
+import {colours, emailRegex} from '../Constants';
 import Button from '../Components/Button';
 const screenWidth = Dimensions.get('window').width;
 
@@ -19,15 +20,15 @@ const Signup = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [pswd, setPswd] = useState('');
+  const [showpswd, setShowpswd] = useState(false);
   const [errors, setErrors] = useState({name: [], email: [], pswd: []});
   const navigation = useNavigation('');
-  const onRegister = async () => {
-    console.log(`buttonpressed`);
 
+  const onRegister = async () => {
     const validation = {};
     setErrors({name: [], email: [], pswd: []});
     if (name.length < 1) {
-      validation['name'] = ['Enter valida name'];
+      validation['name'] = ['Enter valid name'];
     }
     if (email.length < 1) {
       validation['email'] = ['Enter valid Email'];
@@ -60,8 +61,11 @@ const Signup = () => {
       navigation.push('Signin');
     }
   };
+  const onShowpswd = () => {
+    [setShowpswd(showpswd => !showpswd)];
+  };
   return (
-    <View style={styles.viewContainer}>
+    <View style={styles.viewContainer} onPress={() => console.log('Pressed')}>
       <Text style={styles.signupText}>Sign Up</Text>
       <View style={styles.iconTextinput}>
         <Icon
@@ -128,12 +132,19 @@ const Signup = () => {
           style={styles.pswdinputContainer}
           onChangeText={setPswd}
           value={pswd}
+          secureTextEntry={showpswd}
           autoCapitalize="none"
           autoCorrect
           placeholder="Password"
           placeholderTextColor={colours.black}
         />
-        <Icon name="eye" size={30} color={colours.violet} />
+        <Icon
+          name={showpswd ? 'eye-slash' : 'eye'}
+          size={30}
+          color={colours.violet}
+          style={{paddingRight: 15}}
+          onPress={onShowpswd}
+        />
       </View>
       <View style={styles.errorContainer}>
         {errors['pswd'].map(error => {
@@ -158,7 +169,11 @@ const Signup = () => {
       </View>
       <View style={styles.textcontainer}>
         <Text style={styles.alreadyText}>Already have an Account </Text>
-        <Text style={styles.sText}> Sign In</Text>
+        <TouchableOpacity
+          style={styles.sText}
+          onPress={() => navigation.push('Signin')}>
+          <Text>Sign In</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -180,7 +195,8 @@ const styles = StyleSheet.create({
   },
   iconTextinput: {
     width: screenWidth * 0.87,
-    marginBottom: 10,
+    marginTop: 10,
+    marginBottom: 0,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
@@ -205,20 +221,20 @@ const styles = StyleSheet.create({
     width: screenWidth * 0.87,
   },
   pswdinputContainer: {
-    width: '50%',
+    width: '80%',
     height: 40,
 
     paddingLeft: 15,
 
     // borderColor: colours.gray,
-    width: screenWidth * 0.87,
   },
   errorContainer: {
-    width: '100%',
+    width: screenWidth * 0.87,
+
     height: 20,
     margin: 0,
-    borderWidth: 1,
-    paddingLeft: 10,
+
+    paddingLeft: 20,
   },
   error: {color: colours.red, fontSize: 10},
   checkboxContainer: {

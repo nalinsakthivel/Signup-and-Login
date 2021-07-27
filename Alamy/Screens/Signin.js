@@ -1,22 +1,42 @@
 import React, {useState} from 'react';
-import {StyleSheet, Text, View, TextInput, Dimensions} from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  TextInput,
+  Dimensions,
+  ToastAndroid,
+  TouchableOpacity,
+} from 'react-native';
+import {useNavigation} from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import {colours, emailRegex} from '../Constants';
 import Button from '../Components/Button';
 import CheckBox from '@react-native-community/checkbox';
 const screenWidth = Dimensions.get('window').width;
 const Signin = () => {
+  const navigation = useNavigation();
   const [email, setEmail] = useState('');
   const [pswd, setPswd] = useState('');
   const [errors, setErrors] = useState({email: [], pswd: []});
-  const onPressed = () => {
+  const onPressed = async () => {
     const validation = {};
     setErrors({email: [], pswd: []});
+    let credentials = await AsyncStorage.getItem('credentials');
+    credentials = await JSON.parse(credentials);
+    const {emailadd, paswd} = credentials;
     if (email.length < 1) {
       validation['email'] = ['Enter valid Email'];
     }
+    if (email != emailadd) {
+      validation['email'] = ['Enter correct Email'];
+    }
     if (pswd.length < 1) {
       validation['pswd'] = ['Enter valid Password'];
+    }
+    if (pswd != paswd) {
+      validation['pswd'] = ['Enter correct Password'];
     }
 
     if (!email.match(emailRegex)) {
@@ -27,8 +47,15 @@ const Signin = () => {
       setErrors(err => {
         return {...err, ...validation};
       });
+    } else {
+      ToastAndroid.show(
+        'Signin sucessful',
+        ToastAndroid.SHORT,
+        ToastAndroid.BOTTOM,
+      );
     }
   };
+
   return (
     <View style={styles.viewContainer}>
       <Text style={styles.signupText}>Sign In</Text>
@@ -92,14 +119,22 @@ const Signin = () => {
           tintColors={{true: colours.violet, false: colours.black}}
         />
         <Text style={styles.ctextContainer}>Remember Me</Text>
-        <Text style={styles.ftextContainer}>Forget Password</Text>
+        <TouchableOpacity
+          style={styles.ftextContainer}
+          onPress={() => navigation.push('ForgetPassword')}>
+          <Text>Forget Password</Text>
+        </TouchableOpacity>
       </View>
       <View style={styles.buttonContainer}>
         <Button name="Log In" onPress={onPressed} />
       </View>
       <View style={styles.textcontainer}>
         <Text style={styles.alreadyText}>Doesn't have an account </Text>
-        <Text style={styles.sText}>Create</Text>
+        <TouchableOpacity
+          style={styles.sText}
+          onPress={() => navigation.push('Signup')}>
+          <Text>Create</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );

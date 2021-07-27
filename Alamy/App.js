@@ -8,42 +8,60 @@ import ForgetPassword from './Screens/Forget Password';
 import {createStackNavigator} from '@react-navigation/stack';
 import {NavigationContainer} from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Changing from './Screens/Changing';
+import Effects from './Screens/Effects';
+import Useeffects from './Screens/Useeffects';
+import Effectsnav from './Screens/Effectsnav';
 
 const App = () => {
-  const [values, setValues] = useState(false);
-  useEffect(() => {
-    getdata();
-  }, []);
-  const getdata = async () => {
-    let credentials = await AsyncStorage.getItem('credentials');
-    credentials = await JSON.parse(credentials);
-    if (credentials) {
-      setValues(true);
-    }
-  };
+  // const [values, setValues] = useState(false);
+  // console.log(values);
+  // useEffect(() => {
+  //   getdata();
+  // }, []);
+  // const getdata = async () => {
+  //   let credentials = await AsyncStorage.getItem('credentials');
+  //   credentials = await JSON.parse(credentials);
+  //   if (credentials) {
+  //     setValues(true);
+  //   }
+  // };
 
-  const Stack = createStackNavigator();
+  // const Stack = createStackNavigator();
+  // return (
+  //   <NavigationContainer>
+  //     <Stack.Navigator
+  //       screenOptions={{
+  //         headerShown: false,
+  //       }}>
+  //       <Stack.Screen name="effectsnav" component={Effectsnav} />
+  //     </Stack.Navigator>
+  //   </NavigationContainer>
+  // );
+
   return (
-    // <Signin />
-    <NavigationContainer>
-      {values ? (
-        <Stack.Navigator
-          screenOptions={{
-            headerShown: false,
-          }}>
-          <Stack.Screen name="Signin" component={Signin} />
-        </Stack.Navigator>
-      ) : (
-        <Stack.Navigator
-          screenOptions={{
-            headerShown: false,
-          }}>
-          <Stack.Screen name="Signup" component={Signup} />
-          <Stack.Screen name="Signin" component={Signin} />
-          <Stack.Screen name="ForgetPassword" component={ForgetPassword} />
-        </Stack.Navigator>
-      )}
-    </NavigationContainer>
+    <Effectsnav />
+    // // <Signin />
+    // <NavigationContainer>
+    //   {values ? (
+    //     <Stack.Navigator
+    //       screenOptions={{
+    //         headerShown: false,
+    //       }}>
+    //       <Stack.Screen name="Signin" component={Signin} />
+    //       <Stack.Screen name="ForgetPassword" component={ForgetPassword} />
+    //     </Stack.Navigator>
+    //   ) : (
+    //     <Stack.Navigator
+    //       screenOptions={{
+    //         headerShown: false,
+    //       }}>
+    //       <Stack.Screen name="Signup" component={Signup} />
+    //       <Stack.Screen name="Signin" component={Signin} />
+    //       <Stack.Screen name="ForgetPassword" component={ForgetPassword} />
+    //     </Stack.Navigator>
+    //   )}
+    // </NavigationContainer>
   );
 };
 

@@ -8,9 +8,11 @@ import {
 } from 'react-native';
 import {colours} from '../Constants';
 const screenWidth = Dimensions.get('window').width;
-const Button = ({name, onPress}) => {
+const Button = ({name, onPress, style}) => {
   return (
-    <TouchableOpacity style={styles.touchContainer} onPress={onPress}>
+    <TouchableOpacity
+      style={{...styles.touchContainer, ...style}}
+      onPress={onPress}>
       <Text style={styles.text}>{name}</Text>
     </TouchableOpacity>
   );
@@ -22,7 +24,7 @@ const styles = StyleSheet.create({
   touchContainer: {
     width: screenWidth * 0.87,
     height: 40,
-    // elevation: 10,
+    elevation: 10,
     alignItems: 'center',
     justifyContent: 'center',
 

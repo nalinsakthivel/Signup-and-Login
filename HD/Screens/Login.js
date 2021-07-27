@@ -22,8 +22,7 @@ const Login = () => {
     let credentials = await AsyncStorage.getItem('credentials');
     credentials = await JSON.parse(credentials);
     const {phone} = credentials;
-    console.log(`phnum`, phone);
-    console.log(`phone`, phnumb);
+
     if (phnumb.length < 1) {
       validation.push('Kindly enter valid Phone Number ');
     }
